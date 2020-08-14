@@ -5,8 +5,8 @@
 %define modname	hid-asus-rog
 
 Name:           dkms-%{modname}
-Version:        0.1.0
-Release:        1
+Version:        0.2.0
+Release:        0
 Summary:        Asus N-Key device driver
 License:        GPL-2.0
 Group:          System Environment/Kernel
