@@ -101,6 +101,9 @@ MODULE_DESCRIPTION("Asus HID Keyboard and TouchPad");
 #define KEY_KBDILLUM_MODE_PREV	0x2ea
 #define KEY_KBDILLUM_MODE_NEXT	0x2eb
 
+/* ACPI notify method ?? */
+#define ASUS_WMI_METHODID_NOTIF		0x00100021
+
 struct asus_kbd_leds {
 	struct led_classdev cdev;
 	struct hid_device *hdev;
