@@ -6,7 +6,7 @@
 
 Name:           dkms-%{modname}
 Version:        0.1.0
-Release:        0
+Release:        1
 Summary:        Asus N-Key device driver
 License:        GPL-2.0
 Group:          System Environment/Kernel
