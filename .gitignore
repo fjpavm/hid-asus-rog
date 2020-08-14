@@ -11,5 +11,11 @@ core
 *.ko
 *.mod
 *.mod.c
+*.tar.gz
+*.tar.xz
+*.log
+*.rpm
 .tmp_versions
 .vscode
+hid-asus-rog-*
+noarch
