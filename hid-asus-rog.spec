@@ -16,7 +16,8 @@ Requires:       binutils
 Requires:       gcc
 Requires:       make
 Requires:       dkms
-BuildRequires:  kernel-devel
+Requires:       kernel-headers
+Requires:       kernel-devel
 BuildArch:      noarch
 
 %description
