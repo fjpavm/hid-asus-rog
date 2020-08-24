@@ -8,3 +8,6 @@ $ make onboot
 ```
 
 `make onboot` will deny `hid_asus` module from loading, `hid_asus_rog` replaces it.
+
+Packaging and auto-builds are available [here](https://build.opensuse.org/package/show/home:luke_nukem:asus/hid-asus)
+Download repositories are available [here](https://download.opensuse.org/repositories/home:/luke_nukem:/asus/)
