@@ -16,7 +16,7 @@ clean:
 		.tmp_versions modules.order Module.symvers
 
 dkmsclean:
-	dkms remove -m hid-asus-rog -v 0.3.0 --all
+	dkms remove -m hid-asus-rog -v 0.3.0 --all || true
 
 dkms: dkmsclean
 	dkms add .
