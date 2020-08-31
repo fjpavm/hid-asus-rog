@@ -329,9 +329,6 @@ static int asus_raw_event(struct hid_device *hdev,
 		if (report->id == FEATURE_KBD_LED_REPORT_ID1 ||
 				report->id == FEATURE_KBD_LED_REPORT_ID2) {
 			return -1;
-		/* Any key press emits these codes on some devices */
-		} else if (FEATURE_KBD_REPORT_ID && (data[1] == 0xec || 0x02)) {
-			return -1;
 		/* Fn+F5 "fan" symbol, trigger WMI event to toggle next mode */
 		} else if (report->id == FEATURE_KBD_REPORT_ID && data[1] == 0xae) {
 			return asus_wmi_send_event(drvdata, 0xae);
@@ -340,7 +337,6 @@ static int asus_raw_event(struct hid_device *hdev,
 
 	return 0;
 }
-
 
 static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size)
 {
