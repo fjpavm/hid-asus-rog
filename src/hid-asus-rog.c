@@ -31,7 +31,6 @@
 #include <linux/input/mt.h>
 #include <linux/usb.h> /* For to_usb_interface for T100 touchpad intf check */
 #include <linux/power_supply.h>
-//#include <../drivers/platform/x86/asus-wmi.h>
 
 #include "hid-ids.h"
 
@@ -303,8 +302,8 @@ static int asus_event(struct hid_device *hdev, struct hid_field *field,
 	if ((usage->hid & HID_USAGE_PAGE) == HID_UP_ASUSVENDOR &&
 	    (usage->hid & HID_USAGE) != 0x00 &&
 	    (usage->hid & HID_USAGE) != 0xff && !usage->type) {
-		hid_warn(hdev, "Unmapped Asus vendor usagepage code 0x%02x\n",
-			 usage->hid & HID_USAGE);
+		hid_warn(hdev, "Unmapped Asus vendor code 0x%02x, report ID 0x%02x\n",
+			field->report->id, usage->hid & HID_USAGE);
 	}
 
 	return 0;
@@ -313,6 +312,7 @@ static int asus_event(struct hid_device *hdev, struct hid_field *field,
 static int asus_raw_event(struct hid_device *hdev,
 		struct hid_report *report, u8 *data, int size)
 {
+	int ret;
 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
 
 	if (drvdata->battery && data[0] == BATTERY_REPORT_ID)
@@ -333,11 +333,16 @@ static int asus_raw_event(struct hid_device *hdev,
 		} else if (report->id == FEATURE_KBD_REPORT_ID) {
 			/* Fn+F5 "fan" symbol, trigger WMI event to toggle next mode */
 			if (data[1] == 0xae) {
-				return asus_wmi_send_event(drvdata, 0xae);
-			/* These two bytes are sent by the keyboard after every keypress on some
-			 * models like the G14 and G15
+				ret = asus_wmi_send_event(drvdata, 0xae);
+				if (ret < 0) {
+					hid_warn(hdev, "Asus failed to trigger fan control event");
+				}
+				return -1;
+			/* G14 and G15 send these codes on some keypresses with no
+			 * discernable reason for doing so
 			*/
-			} else if (data[1] == 0xec || data[1] == 0x02) {
+			} else if (data[1] == 0xea || data[1] == 0xec || data[1] == 0x02 ||
+					data[1] == 0x8a || data[1] == 0x9e) {
 				return -1;
 			}
 		}
@@ -355,8 +360,9 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
 	if (!dmabuf)
 		return -ENOMEM;
 
-	// The report ID should be set from the incoming buffer due to LED and key
-	// interfaces having different pages
+	/* The report ID should be set from the incoming buffer due to LED and key
+	 * interfaces having different pages
+	*/
 	ret = hid_hw_raw_request(hdev, buf[0], dmabuf,
 				 buf_size, HID_FEATURE_REPORT,
 				 HID_REQ_SET_REPORT);
