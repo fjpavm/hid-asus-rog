@@ -324,14 +324,22 @@ static int asus_raw_event(struct hid_device *hdev,
 	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
 		/*
 		 * Skip these report ID, the device emits a continuous stream associated
-		 * with the AURA mode it is in
+		 * with the AURA mode it is in which looks like an 'echo'
 		*/
 		if (report->id == FEATURE_KBD_LED_REPORT_ID1 ||
 				report->id == FEATURE_KBD_LED_REPORT_ID2) {
 			return -1;
-		/* Fn+F5 "fan" symbol, trigger WMI event to toggle next mode */
-		} else if (report->id == FEATURE_KBD_REPORT_ID && data[1] == 0xae) {
-			return asus_wmi_send_event(drvdata, 0xae);
+		/* Additional report filtering */
+		} else if (report->id == FEATURE_KBD_REPORT_ID) {
+			/* Fn+F5 "fan" symbol, trigger WMI event to toggle next mode */
+			if (data[1] == 0xae) {
+				return asus_wmi_send_event(drvdata, 0xae);
+			/* These two bytes are sent by the keyboard after every keypress on some
+			 * models like the G14 and G15
+			*/
+			} else if (data[1] == 0xec || data[1] == 0x02) {
+				return -1;
+			}
 		}
 	}
 
