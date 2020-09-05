@@ -16,11 +16,11 @@ clean:
 		.tmp_versions modules.order Module.symvers
 
 dkmsclean:
-	dkms remove -m hid-asus-rog -v 0.4.4 --all || true
+	dkms remove -m hid-asus-rog -v 0.4.5 --all || true
 
 dkms: dkmsclean
 	dkms add .
-	dkms install -m hid-asus-rog -v 0.4.4
+	dkms install -m hid-asus-rog -v 0.4.5
 
 onboot:
 	echo "blacklist hid-asus" > /etc/modprobe.d/asus-rog.conf
