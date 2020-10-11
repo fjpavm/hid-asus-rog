@@ -1,5 +1,4 @@
 obj-m	:= src/hid-asus-rog.o
-
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD       := $(shell pwd)
 
@@ -17,10 +16,11 @@ clean:
 
 dkmsclean:
 	dkms remove -m hid-asus-rog -v 0.4.5 --all || true
+	dkms remove -m hid-asus-rog -v 0.5.0 --all || true
 
 dkms: dkmsclean
 	dkms add .
-	dkms install -m hid-asus-rog -v 0.4.5
+	dkms install -m hid-asus-rog -v 0.5.0
 
 onboot:
 	echo "blacklist hid-asus" > /etc/modprobe.d/asus-rog.conf
