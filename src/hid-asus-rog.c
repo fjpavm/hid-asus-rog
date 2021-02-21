@@ -445,25 +445,32 @@ static int rog_nkey_led_init(struct hid_device *hdev)
 	hid_info(hdev, "Asus initialise N-KEY Device");
 	/* The first message is an init start */
 	ret = asus_kbd_set_report(hdev, buf_init_start, sizeof(buf_init_start));
-	if (ret < 0)
+	if (ret < 0) {
 		hid_warn(hdev, "Asus failed to send init start command: %d\n", ret);
+		return ret;
+	}
 	/* Followed by a string */
 	ret = asus_kbd_set_report(hdev, buf_init2, sizeof(buf_init2));
-	if (ret < 0)
+	if (ret < 0) {
 		hid_warn(hdev, "Asus failed to send init command 1.0: %d\n", ret);
+		return ret;
+	}
 	/* Followed by a string */
 	ret = asus_kbd_set_report(hdev, buf_init3, sizeof(buf_init3));
-	if (ret < 0)
+	if (ret < 0) {
 		hid_warn(hdev, "Asus failed to send init command 1.1: %d\n", ret);
+		return ret;
+	}
 
 	/* begin second report ID with same data */
 	buf_init2[0] = FEATURE_KBD_LED_REPORT_ID2;
 	buf_init3[0] = FEATURE_KBD_LED_REPORT_ID2;
 
 	ret = asus_kbd_set_report(hdev, buf_init2, sizeof(buf_init2));
-	if (ret < 0)
+	if (ret < 0) {
 		hid_warn(hdev, "Asus failed to send init command 2.0: %d\n", ret);
-
+		return ret;
+	}
 	ret = asus_kbd_set_report(hdev, buf_init3, sizeof(buf_init3));
 	if (ret < 0)
 		hid_warn(hdev, "Asus failed to send init command 2.1: %d\n", ret);
