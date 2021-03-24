@@ -362,6 +362,17 @@ static int asus_raw_event(struct hid_device *hdev,
 				return -1;
 			}
 		}
+		
+		if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
+			/*
+			 * G713 and G733 send these codes on some keypresses with no
+			 * discernable reason for doing so. We'll filter them out to avoid
+			 * unmapped warning messages later.
+			*/
+			if(data[1] == 0x30) {
+				return -1;
+			}
+		}
 	}
 
 	return 0;
