@@ -30,6 +30,7 @@
 #include <linux/input/mt.h>
 #include <linux/usb.h> /* For to_usb_interface for T100 touchpad intf check */
 #include <linux/power_supply.h>
+#include <linux/version.h>
 
 #include "hid-ids.h"
 
@@ -1143,8 +1144,13 @@ static const __u8 asus_g752_fixed_rdesc[] = {
         0x2A, 0xFF, 0x00,		/*   Usage Maximum (0xFF)       */
 };
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6,12,0)
 static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 		unsigned int *rsize)
+#else
+static const __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+		unsigned int *rsize)
+#endif
 {
 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
 
