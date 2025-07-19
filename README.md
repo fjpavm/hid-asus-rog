@@ -5,5 +5,7 @@ Add to dkms manually with:
 2. `dkms build hid-asus-rog/1.0.2`
 2. `dkms install hid-asus-rog/1.0.2`
 
-Cloned from https://gitlab.com/asus-linux/hid-asus-rog to update for kernels 6.3 and above
+Cloned from https://gitlab.com/asus-linux/hid-asus-rog to update for kernels >= 6.3  < 6.14 
 Tested on ASUS ROG Zephyrus G14 GA401QM - Linux Mint 21.3 with kernel 6.8 installed
+Tested on ASUS ROG Zephyrus G14 GA401QM - Linux Mint 21.3 with kernel 6.11 installed
+Curently failing for kernel 6.14
